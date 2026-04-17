@@ -1,16 +1,22 @@
 # Rivet Graphics Framework
 
-A bespoke game engine done in c++ and opengl
+A bespoke game engine done in c++ and opengl inspired by raylib
 
 
 ## Features
 
-- Light engine framework library
+- Different from monolithic "all-in-one" engine
+
+- Light game engine
 
 
 ## Roadmap
 
 - Basic engine and window loop
+
+- Precompiled headers
+
+- Single Rivet header file
 
 - Basic API for Rivet lib
 
@@ -19,8 +25,4 @@ A bespoke game engine done in c++ and opengl
 - Physics component
 
 - Audio component
-
-- Precompiled headers
-
-- Single Rivet header file
 
