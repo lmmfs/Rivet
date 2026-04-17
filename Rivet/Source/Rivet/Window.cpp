@@ -1,5 +1,6 @@
 
 #include "Window.h"
+#include "Logger.h"
 
 
 #include "Rvtph.h"
@@ -22,7 +23,7 @@ namespace Rivet {
     {
         if (!glfwInit())
         {
-            std::cerr << "Failed to initialize GLFW" << std::endl;
+            RVT_CORE_ERROR("Failed to initialize GLFW");
             assert(false);
         }
 
@@ -36,12 +37,9 @@ namespace Rivet {
 
         if (!m_Handle)
         {
-            //CORE_ERROR("Failed to create GLFW window");
-            std::cerr << "Failed to create GLFW window" << std::endl;
+            RVT_CORE_ERROR("Failed to create GLFW window");
             assert(false);
         }
-
-        //glfwSetWindowUserPointer(m_Handle, this);
 
         glfwMakeContextCurrent(m_Handle);
         glfwSetWindowUserPointer(m_Handle, &m_Specification);
@@ -49,7 +47,10 @@ namespace Rivet {
 
         glfwSwapInterval(m_Specification.VSync ? 1 : 0);
 
-
+        glfwSetFramebufferSizeCallback(m_Handle, [](GLFWwindow*, int width, int height)
+        {
+            glViewport(0, 0, width, height);
+        });
     }
 
     void Window::Destroy()
@@ -67,6 +68,13 @@ namespace Rivet {
     }
 
     glm::vec2 Window::GetFramebufferSize()
+    {
+        int width, height;
+        glfwGetFramebufferSize(m_Handle, &width, &height);
+        return { width, height };
+    }
+
+    glm::ivec2 Window::GetWindowSize()
     {
         int width, height;
         glfwGetFramebufferSize(m_Handle, &width, &height);

@@ -4,10 +4,11 @@
 
 1. Define `Rivet::Init()` — initialise GLFW window and GL context via the existing `Window` class.
 2. Define `Rivet::ShouldClose()` — thin wrapper over the window close flag.
-3. Define `Rivet::BeginFrame()` — poll events, clear the back-buffer.
+3. Define `Rivet::BeginFrame()` — poll events, clear the back-buffer using the current clear color.
 4. Define `Rivet::EndFrame()` — swap buffers.
 5. Define `Rivet::Shutdown()` — destroy window and terminate GLFW.
-6. Wire up Sandbox `Main.cpp` to use the new lifecycle API and verify it compiles and runs.
+6. Define `Rivet::SetClearColor(r, g, b, a)` and `Rivet::SetClearColor(glm::vec4)` — set the color used to clear the back-buffer each frame; defaults to opaque black.
+7. Wire up Sandbox `Main.cpp` to use the new lifecycle API and verify it compiles and runs.
 
 ## Group 2 — Keyboard Polling
 

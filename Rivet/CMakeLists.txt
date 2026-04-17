@@ -8,6 +8,12 @@ Vendor/stb/stb_image.cpp
 Source/Rvtph.h
 Source/Rivet/Window.h
 Source/Rivet/Window.cpp
+Source/Rivet/App.h
+Source/Rivet/App.cpp
+Source/Rivet/Input.h
+Source/Rivet/Input.cpp
+Source/Rivet/Logger.h
+Source/Rivet/Logger.cpp
 )
 
 add_library(Rivet STATIC)

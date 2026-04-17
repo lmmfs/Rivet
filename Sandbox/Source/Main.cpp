@@ -2,20 +2,23 @@
 
 int main()
 {
-    Rivet::WindowSpecification spec;
-    spec.Title = "Sandbox";
-    spec.Width = 1280;
-    spec.Height = 720;
+    Rivet::Init("Sandboxx", 1280, 720);
+    Rivet::SetClearColor(0.53f, 0.81f, 0.92f);
 
-    Rivet::Window window(spec);
-    window.Create();
-
-    while (!window.ShouldClose())
+    while (!Rivet::ShouldClose())
     {
-        window.Update();
+        Rivet::BeginFrame();
+
+        if (Rivet::IsKeyPressed(Rivet::Key::Escape))
+            break;
+
+        RVT_INFO("Mouse: ({:.1f}, {:.1f})", Rivet::GetMousePosition().x, Rivet::GetMousePosition().y);
+
+        Rivet::EndFrame();
     }
 
-    window.Destroy();
+    Rivet::Shutdown();
 
     return 0;
 }
+

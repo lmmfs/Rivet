@@ -29,6 +29,7 @@ namespace Rivet {
         void Update();
 
         glm::vec2 GetFramebufferSize();
+        glm::ivec2 GetWindowSize();
 
         bool ShouldClose() const;
 
