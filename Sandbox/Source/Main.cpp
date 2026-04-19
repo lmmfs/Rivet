@@ -7,15 +7,27 @@ int main()
 
     Rivet::Shader shader = Rivet::LoadShader("shaders/basic.vert", "shaders/basic.frag");
 
-    float vertices[] = {
+    float positions[] = {
         -0.5f, -0.5f, 0.0f,
          0.5f, -0.5f, 0.0f,
          0.0f,  0.5f, 0.0f,
     };
 
-    Rivet::VertexArray  va = Rivet::CreateVertexArray();
-    Rivet::VertexBuffer vb = Rivet::CreateVertexBuffer(vertices, sizeof(vertices));
-    Rivet::SetVertexAttrib(0, 3, 3 * sizeof(float), 0);
+    float colors[] = {
+        1.0f, 0.0f, 0.0f,   // bottom-left  — red
+        1.0f, 1.0f, 1.0f,   // bottom-right — green
+        0.0f, 0.0f, 1.0f,   // top          — blue
+    };
+
+    Rivet::VertexArray  va    = Rivet::CreateVertexArray();
+    Rivet::VertexBuffer vbPos = Rivet::CreateVertexBuffer(positions, sizeof(positions));
+    Rivet::VertexBuffer vbCol = Rivet::CreateVertexBuffer(colors,    sizeof(colors));
+
+    Rivet::BufferLayout posLayout = { { Rivet::ShaderDataType::Float3, "a_Position" } };
+    Rivet::BufferLayout colLayout = { { Rivet::ShaderDataType::Float3, "a_Color"    } };
+
+    Rivet::SetVertexArrayLayout(va, vbPos, posLayout);
+    Rivet::SetVertexArrayLayout(va, vbCol, colLayout);
 
     uint64_t frame    = 0;
     double   fpsTimer = glfwGetTime();
@@ -104,7 +116,6 @@ int main()
 
         // Draw triangle
         Rivet::UseShader(shader);
-        Rivet::SetUniformVec4(shader, "u_Color", { 1.0f, 0.5f, 0.2f, 1.0f });
         Rivet::BindVertexArray(va);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
@@ -112,7 +123,8 @@ int main()
     }
 
     Rivet::DeleteVertexArray(va);
-    Rivet::DeleteVertexBuffer(vb);
+    Rivet::DeleteVertexBuffer(vbPos);
+    Rivet::DeleteVertexBuffer(vbCol);
     Rivet::DeleteShader(shader);
 
     Rivet::Shutdown();

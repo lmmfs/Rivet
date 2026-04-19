@@ -21,6 +21,8 @@ Source/Rivet/Renderer/Shader.h
 Source/Rivet/Renderer/Shader.cpp
 Source/Rivet/Renderer/Buffer.h
 Source/Rivet/Renderer/Buffer.cpp
+Source/Rivet/Renderer/BufferLayout.h
+Source/Rivet/Renderer/BufferLayout.cpp
 )
 
 add_library(Rivet STATIC)
