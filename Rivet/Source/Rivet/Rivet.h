@@ -4,3 +4,5 @@
 #include "Input.h"
 #include "Logger.h"
 #include "Window.h"
+#include "Events/Event.h"
+#include "Events/EventQueue.h"

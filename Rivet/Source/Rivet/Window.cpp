@@ -1,7 +1,7 @@
 
 #include "Window.h"
 #include "Logger.h"
-
+#include "Events/EventQueue.h"
 
 #include "Rvtph.h"
 
@@ -47,9 +47,83 @@ namespace Rivet {
 
         glfwSwapInterval(m_Specification.VSync ? 1 : 0);
 
+        // Keep viewport in sync with the framebuffer (handles HiDPI too)
         glfwSetFramebufferSizeCallback(m_Handle, [](GLFWwindow*, int width, int height)
         {
             glViewport(0, 0, width, height);
+        });
+
+        // ---- Window events ----
+
+        glfwSetWindowCloseCallback(m_Handle, [](GLFWwindow*)
+        {
+            Event e;
+            e.type = EventType::WindowClose;
+            PushEvent(e);
+        });
+
+        glfwSetWindowSizeCallback(m_Handle, [](GLFWwindow*, int width, int height)
+        {
+            Event e;
+            e.type = EventType::WindowResize;
+            e.windowResize.width  = width;
+            e.windowResize.height = height;
+            PushEvent(e);
+        });
+
+        glfwSetWindowFocusCallback(m_Handle, [](GLFWwindow*, int focused)
+        {
+            Event e;
+            e.type = focused ? EventType::WindowFocus : EventType::WindowLostFocus;
+            PushEvent(e);
+        });
+
+        // ---- Input events ----
+
+        glfwSetKeyCallback(m_Handle, [](GLFWwindow*, int key, int /*scancode*/, int action, int /*mods*/)
+        {
+            if (action == GLFW_PRESS || action == GLFW_REPEAT)
+            {
+                Event e;
+                e.type = EventType::KeyPressed;
+                e.keyPressed.key         = static_cast<Key>(key);
+                e.keyPressed.repeatCount = (action == GLFW_REPEAT) ? 1 : 0;
+                PushEvent(e);
+            }
+            else if (action == GLFW_RELEASE)
+            {
+                Event e;
+                e.type = EventType::KeyReleased;
+                e.keyReleased.key = static_cast<Key>(key);
+                PushEvent(e);
+            }
+        });
+
+        glfwSetCursorPosCallback(m_Handle, [](GLFWwindow*, double x, double y)
+        {
+            Event e;
+            e.type       = EventType::MouseMoved;
+            e.mouseMoved.x = static_cast<float>(x);
+            e.mouseMoved.y = static_cast<float>(y);
+            PushEvent(e);
+        });
+
+        glfwSetScrollCallback(m_Handle, [](GLFWwindow*, double xOffset, double yOffset)
+        {
+            Event e;
+            e.type = EventType::MouseScrolled;
+            e.mouseScrolled.xOffset = static_cast<float>(xOffset);
+            e.mouseScrolled.yOffset = static_cast<float>(yOffset);
+            PushEvent(e);
+        });
+
+        glfwSetMouseButtonCallback(m_Handle, [](GLFWwindow*, int button, int action, int /*mods*/)
+        {
+            Event e;
+            e.type         = (action == GLFW_PRESS) ? EventType::MouseButtonPressed
+                                                     : EventType::MouseButtonReleased;
+            e.mouseButton.button = static_cast<MouseButton>(button);
+            PushEvent(e);
         });
     }
 

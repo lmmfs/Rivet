@@ -11,6 +11,46 @@ int main()
     {
         Rivet::BeginFrame();
 
+        // Drain the event queue
+        Rivet::Event e;
+        while (Rivet::PollEvent(e))
+        {
+            switch (e.type)
+            {
+                case Rivet::EventType::WindowClose:
+                    RVT_INFO("[Event] WindowClose");
+                    break;
+                case Rivet::EventType::WindowResize:
+                    RVT_INFO("[Event] WindowResize: {}x{}", e.windowResize.width, e.windowResize.height);
+                    break;
+                case Rivet::EventType::WindowFocus:
+                    RVT_INFO("[Event] WindowFocus");
+                    break;
+                case Rivet::EventType::WindowLostFocus:
+                    RVT_INFO("[Event] WindowLostFocus");
+                    break;
+                case Rivet::EventType::KeyPressed:
+                    RVT_INFO("[Event] KeyPressed: key={} repeat={}", static_cast<int>(e.keyPressed.key), e.keyPressed.repeatCount);
+                    break;
+                case Rivet::EventType::KeyReleased:
+                    RVT_INFO("[Event] KeyReleased: key={}", static_cast<int>(e.keyReleased.key));
+                    break;
+                case Rivet::EventType::MouseMoved:
+                    RVT_DEBUG("[Event] MouseMoved: ({:.1f}, {:.1f})", e.mouseMoved.x, e.mouseMoved.y);
+                    break;
+                case Rivet::EventType::MouseScrolled:
+                    RVT_INFO("[Event] MouseScrolled: ({:.2f}, {:.2f})", e.mouseScrolled.xOffset, e.mouseScrolled.yOffset);
+                    break;
+                case Rivet::EventType::MouseButtonPressed:
+                    RVT_INFO("[Event] MouseButtonPressed: button={}", static_cast<int>(e.mouseButton.button));
+                    break;
+                case Rivet::EventType::MouseButtonReleased:
+                    RVT_INFO("[Event] MouseButtonReleased: button={}", static_cast<int>(e.mouseButton.button));
+                    break;
+                default: break;
+            }
+        }
+
         if (Rivet::IsKeyPressed(Rivet::Key::Escape))
             break;
 

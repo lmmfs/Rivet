@@ -14,6 +14,9 @@ Source/Rivet/Input.h
 Source/Rivet/Input.cpp
 Source/Rivet/Logger.h
 Source/Rivet/Logger.cpp
+Source/Rivet/Events/Event.h
+Source/Rivet/Events/EventQueue.h
+Source/Rivet/Events/EventQueue.cpp
 )
 
 add_library(Rivet STATIC)
