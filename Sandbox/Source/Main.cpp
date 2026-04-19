@@ -2,14 +2,39 @@
 
 int main()
 {
-    Rivet::Init("Sandboxx", 1280, 720);
-    Rivet::SetClearColor(0.53f, 0.81f, 0.92f);
+    Rivet::Init("Sandbox", 1280, 720);
+    Rivet::SetClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
-    uint64_t frame = 0;
+    Rivet::Shader shader = Rivet::LoadShader("shaders/basic.vert", "shaders/basic.frag");
+
+    float vertices[] = {
+        -0.5f, -0.5f, 0.0f,
+         0.5f, -0.5f, 0.0f,
+         0.0f,  0.5f, 0.0f,
+    };
+
+    Rivet::VertexArray  va = Rivet::CreateVertexArray();
+    Rivet::VertexBuffer vb = Rivet::CreateVertexBuffer(vertices, sizeof(vertices));
+    Rivet::SetVertexAttrib(0, 3, 3 * sizeof(float), 0);
+
+    uint64_t frame    = 0;
+    double   fpsTimer = glfwGetTime();
+    int      fpsCount = 0;
 
     while (!Rivet::ShouldClose())
     {
         Rivet::BeginFrame();
+        Rivet::Clear();
+
+        // FPS counter — log once per second
+        ++fpsCount;
+        double now = glfwGetTime();
+        if (now - fpsTimer >= 1.0)
+        {
+            RVT_INFO("FPS: {}", fpsCount);
+            fpsCount  = 0;
+            fpsTimer += 1.0;
+        }
 
         // Drain the event queue
         Rivet::Event e;
@@ -55,7 +80,7 @@ int main()
             break;
 
         // Validation 2: frame counter
-        RVT_DEBUG("Frame {}", frame++);
+        /*RVT_DEBUG("Frame {}", frame++);
 
         // Validation 3: keyboard
         if (Rivet::IsKeyDown(Rivet::Key::W))
@@ -75,10 +100,20 @@ int main()
         if (Rivet::IsMouseButtonPressed(Rivet::MouseButton::Left))
             RVT_INFO("LMB pressed (frame {})", frame);
         if (Rivet::IsMouseButtonReleased(Rivet::MouseButton::Left))
-            RVT_INFO("LMB released (frame {})", frame);
+            RVT_INFO("LMB released (frame {})", frame);*/
+
+        // Draw triangle
+        Rivet::UseShader(shader);
+        Rivet::SetUniformVec4(shader, "u_Color", { 1.0f, 0.5f, 0.2f, 1.0f });
+        Rivet::BindVertexArray(va);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
 
         Rivet::EndFrame();
     }
+
+    Rivet::DeleteVertexArray(va);
+    Rivet::DeleteVertexBuffer(vb);
+    Rivet::DeleteShader(shader);
 
     Rivet::Shutdown();
 

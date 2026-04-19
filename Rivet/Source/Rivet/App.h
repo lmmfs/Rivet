@@ -13,6 +13,8 @@ namespace Rivet {
 
     void SetClearColor(float r, float g, float b, float a = 1.0f);
     void SetClearColor(const glm::vec4& color);
+    void Clear();
+    void SetViewport(int x, int y, int width, int height);
 
     glm::ivec2 GetWindowSize();
 

@@ -38,9 +38,6 @@ namespace Rivet {
     {
         Input::UpdateState();
         glfwPollEvents();
-
-        glClearColor(s_ClearColor.r, s_ClearColor.g, s_ClearColor.b, s_ClearColor.a);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
     void EndFrame()
@@ -63,6 +60,17 @@ namespace Rivet {
     void SetClearColor(const glm::vec4& color)
     {
         s_ClearColor = color;
+    }
+
+    void Clear()
+    {
+        glClearColor(s_ClearColor.r, s_ClearColor.g, s_ClearColor.b, s_ClearColor.a);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    }
+
+    void SetViewport(int x, int y, int width, int height)
+    {
+        glViewport(x, y, width, height);
     }
 
     glm::ivec2 GetWindowSize()

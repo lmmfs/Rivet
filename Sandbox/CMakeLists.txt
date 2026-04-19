@@ -27,7 +27,9 @@ set_target_properties(Sandbox PROPERTIES
 )
 
 
-#add_custom_target(copy_shaders
- #       COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/Sandbox/Shaders" "${CMAKE_CURRENT_BINARY_DIR}/Shaders"
-  #  )
-   # add_dependencies(Sandbox copy_shaders)
+add_custom_command(TARGET Sandbox POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_SOURCE_DIR}/Sandbox/shaders"
+        "$<TARGET_FILE_DIR:Sandbox>/shaders"
+    COMMENT "Copying Sandbox shaders to build directory"
+)

@@ -17,6 +17,10 @@ Source/Rivet/Logger.cpp
 Source/Rivet/Events/Event.h
 Source/Rivet/Events/EventQueue.h
 Source/Rivet/Events/EventQueue.cpp
+Source/Rivet/Renderer/Shader.h
+Source/Rivet/Renderer/Shader.cpp
+Source/Rivet/Renderer/Buffer.h
+Source/Rivet/Renderer/Buffer.cpp
 )
 
 add_library(Rivet STATIC)

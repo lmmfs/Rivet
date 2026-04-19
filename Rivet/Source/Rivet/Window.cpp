@@ -1,5 +1,6 @@
 
 #include "Window.h"
+#include "App.h"
 #include "Logger.h"
 #include "Events/EventQueue.h"
 
@@ -50,7 +51,7 @@ namespace Rivet {
         // Keep viewport in sync with the framebuffer (handles HiDPI too)
         glfwSetFramebufferSizeCallback(m_Handle, [](GLFWwindow*, int width, int height)
         {
-            glViewport(0, 0, width, height);
+            SetViewport(0, 0, width, height);
         });
 
         // ---- Window events ----
