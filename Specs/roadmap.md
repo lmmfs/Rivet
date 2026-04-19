@@ -28,10 +28,10 @@ Each phase is a small, shippable increment. Complete one before starting the nex
 - [x] Clear color & viewport management
 
 ## Phase 5 — Buffer Layouts
-- [ ] ShaderDataType enum
-- [ ] BufferElement struct (name, type, size, offset, normalized)
-- [ ] BufferLayout collection (auto stride & offsets)
-- [ ] Apply layout to vertex array
+- [x] ShaderDataType enum
+- [x] BufferElement struct (name, type, size, offset, normalized)
+- [x] BufferLayout collection (auto stride & offsets)
+- [x] Apply layout to vertex array
 
 ## Phase 6 — GUI (Dear ImGui)
 - [ ] Dear ImGui dependency integration
