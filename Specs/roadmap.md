@@ -22,10 +22,10 @@ Each phase is a small, shippable increment. Complete one before starting the nex
 - [x] Event dispatcher (polling queue)
 
 ## Phase 4 — Basic Renderer
-- [ ] Shader loading & compilation (vertex + fragment)
-- [ ] Shader program linking and uniform setters
-- [ ] VAO/VBO/EBO abstraction
-- [ ] Clear color & viewport management
+- [x] Shader loading & compilation (vertex + fragment)
+- [x] Shader program linking and uniform setters
+- [x] VAO/VBO/EBO abstraction
+- [x] Clear color & viewport management
 
 ## Phase 5 — 2D Drawing
 - [ ] Textured quad rendering
