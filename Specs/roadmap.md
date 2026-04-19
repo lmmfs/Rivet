@@ -19,7 +19,7 @@ Each phase is a small, shippable increment. Complete one before starting the nex
 - [ ] Event base class / type enum
 - [ ] Window events (close, resize, focus)
 - [ ] Input events (key, mouse)
-- [ ] Event dispatcher
+- [ ] Event dispatcher (polling queue)
 
 ## Phase 4 — Basic Renderer
 - [ ] Shader loading & compilation (vertex + fragment)
