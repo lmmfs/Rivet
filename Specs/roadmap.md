@@ -10,10 +10,10 @@ Each phase is a small, shippable increment. Complete one before starting the nex
 - [x] Umbrella header (Rivet/Rivet.h)
 
 ## Phase 2 — Core Loop & Input
-- [ ] Basic application loop abstraction (init / update / shutdown)
-- [ ] Keyboard input polling
-- [ ] Mouse input polling (position, buttons)
-- [ ] Window resize callback handling
+- [x] Basic application loop abstraction (init / update / shutdown)
+- [x] Keyboard input polling
+- [x] Mouse input polling (position, buttons)
+- [x] Window resize callback handling
 
 ## Phase 3 — Events
 - [ ] Event base class / type enum
