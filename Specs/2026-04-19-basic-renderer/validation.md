@@ -50,6 +50,9 @@ All of the following must be true before this branch is merged into `main`.
 - [x] `SetViewport` resizes the rendering area as expected.
 - [x] Resizing the window updates the viewport automatically — the triangle scales
       with the window and does not clip or show black bars from a stale viewport.
+      (`glfwSetWindowSizeCallback` calls `glfwGetFramebufferSize` + `SetViewport`;
+      the separate `glfwSetFramebufferSizeCallback` was removed as it does not fire
+      reliably on Wayland.)
 
 ---
 
@@ -73,4 +76,5 @@ All of the following must be true before this branch is merged into `main`.
       compiles and returns correct values alongside the renderer.
 - [x] Phase 3 event queue (`PollEvent`) still works correctly — no events are dropped
       or duplicated by the addition of the resize→viewport wiring.
+      (`WindowResize` event and viewport update now share a single callback.)
 - [x] `glGetError` returns `GL_NO_ERROR` at the end of each frame in the Sandbox demo.

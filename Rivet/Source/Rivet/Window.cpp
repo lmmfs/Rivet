@@ -48,12 +48,6 @@ namespace Rivet {
 
         glfwSwapInterval(m_Specification.VSync ? 1 : 0);
 
-        // Keep viewport in sync with the framebuffer (handles HiDPI too)
-        glfwSetFramebufferSizeCallback(m_Handle, [](GLFWwindow*, int width, int height)
-        {
-            SetViewport(0, 0, width, height);
-        });
-
         // ---- Window events ----
 
         glfwSetWindowCloseCallback(m_Handle, [](GLFWwindow*)
@@ -63,8 +57,14 @@ namespace Rivet {
             PushEvent(e);
         });
 
-        glfwSetWindowSizeCallback(m_Handle, [](GLFWwindow*, int width, int height)
+        // Update the GL viewport AND push the resize event.
+        // Using glfwGetFramebufferSize gives pixel dimensions (correct on HiDPI too).
+        glfwSetWindowSizeCallback(m_Handle, [](GLFWwindow* window, int width, int height)
         {
+            int fbw, fbh;
+            glfwGetFramebufferSize(window, &fbw, &fbh);
+            SetViewport(0, 0, fbw, fbh);
+
             Event e;
             e.type = EventType::WindowResize;
             e.windowResize.width  = width;
