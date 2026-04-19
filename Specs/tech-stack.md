@@ -10,4 +10,5 @@
 | Math         | GLM             | 1.0.1   |                                     |
 | Logging      | spdlog          | 1.16.0  |                                     |
 | Image        | stb_image       | 2.30    | Vendored                            |
+| GUI          | Dear ImGui      | docking | GLFW + OpenGL3 backends             |
 | PCH          | Rvtph.h         | —       | Precompiled header                  |

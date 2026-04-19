@@ -27,23 +27,35 @@ Each phase is a small, shippable increment. Complete one before starting the nex
 - [x] VAO/VBO/EBO abstraction
 - [x] Clear color & viewport management
 
-## Phase 5 — 2D Drawing
+## Phase 5 — Buffer Layouts
+- [ ] ShaderDataType enum
+- [ ] BufferElement struct (name, type, size, offset, normalized)
+- [ ] BufferLayout collection (auto stride & offsets)
+- [ ] Apply layout to vertex array
+
+## Phase 6 — GUI (Dear ImGui)
+- [ ] Dear ImGui dependency integration
+- [ ] GUI init / shutdown
+- [ ] Per-frame GUI begin / end
+- [ ] Sandbox ImGui demo
+
+## Phase 7 — 2D Drawing
 - [ ] Textured quad rendering
 - [ ] Sprite batching
 - [ ] Basic camera (2D orthographic)
 - [ ] Texture loading via stb_image
 
-## Phase 6 — Asset Manager
+## Phase 8 — Asset Manager
 - [ ] Resource handle system (load once, share)
 - [ ] Texture manager
 - [ ] Shader manager
 
-## Phase 7 — Physics
+## Phase 9 — Physics
 - [ ] Basic 2D collision detection (AABB)
 - [ ] Simple rigid-body response
 - [ ] Evaluate integration of a physics library
 
-## Phase 8 — Audio
+## Phase 10 — Audio
 - [ ] Choose & integrate audio library (e.g. miniaudio)
 - [ ] Sound loading and playback
 - [ ] Volume / pause / stop controls
