@@ -1,5 +1,5 @@
 Prompt 1
-We are writing AgentClinic, a place for AI agents to get relief from their humans. Look in the README.md for input from stakeholders.
+We are writing Rivet game engine, a lightheight game engine. Look in the README.md for input.
 
 Prompt 2
 Let's create a "constitution" in a specs directory:
@@ -17,7 +17,7 @@ Identify any item on tech-stack.md that needs clarification
 
 ------------------------------------------------------------
 
-Prepare for feature
+create branch and markdowns for a feature
 
 
 Find the next phase on specs/roadmap.md and make a branch, ask me about the feature spec. Create:
@@ -31,6 +31,20 @@ Refer to specs/mission.md and specs/tech-stack.md for guidance.
 
 Important: You must ask, grouped on these 3, before writing to disk.
 
+version 2.0 added branch name convection
+
+Find the next phase on specs/roadmap.md and make a branch, ask me about the feature spec. Create:
+
+A new directory YYYY-MM-DD-feature-name under specs for this feature work
+In there:
+plan.md as a series of numbered task groups.
+requirements.md for the scope, decisions, context
+validation.md for how to know the implementation succeeded and can be merged
+Refer to specs/mission.md and specs/tech-stack.md for guidance.
+
+the new branch should have this name convetion "feat/<feature_name>"
+
+Important: You must ask, grouped on these 3, before writing to disk.
 
 ------------------------------------------------------------
 
@@ -63,21 +77,5 @@ Important: You must ask, before writing to disk.
 a struct called BufferElement with the following attributes: Name, ShaderDataType, Size, Offset, Normalized. ShaderDataType is a enum, with values Float, Float2..., the struct could have a method to convert the type to a unit32_t for the size
 
 
---------------------------------------------------------------------
-
-
-
-Find the next phase on specs/roadmap.md and make a branch, ask me about the feature spec. Create:
-
-A new directory YYYY-MM-DD-feature-name under specs for this feature work
-In there:
-plan.md as a series of numbered task groups.
-requirements.md for the scope, decisions, context
-validation.md for how to know the implementation succeeded and can be merged
-Refer to specs/mission.md and specs/tech-stack.md for guidance.
-
-the new branch should have this name convetion "feat/<feature_name>"
-
-Important: You must ask, grouped on these 3, before writing to disk.
-
+------------------------------------------------------------------
 
