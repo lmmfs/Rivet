@@ -78,4 +78,9 @@ namespace Rivet {
         return s_Window->GetWindowSize();
     }
 
+    GLFWwindow* GetNativeWindow()
+    {
+        return s_Window->GetHandle();
+    }
+
 }

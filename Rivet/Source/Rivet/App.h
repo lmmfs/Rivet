@@ -3,10 +3,13 @@
 #include <string>
 #include <glm/glm.hpp>
 
+struct GLFWwindow;
+
 namespace Rivet {
 
     void Init(const std::string& title = "Rivet", uint32_t width = 1280, uint32_t height = 720);
     bool ShouldClose();
+    GLFWwindow* GetNativeWindow();
     void BeginFrame();
     void EndFrame();
     void Shutdown();

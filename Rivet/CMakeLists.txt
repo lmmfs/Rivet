@@ -10,6 +10,8 @@ Source/Rivet/Window.h
 Source/Rivet/Window.cpp
 Source/Rivet/App.h
 Source/Rivet/App.cpp
+Source/Rivet/Editor.h
+Source/Rivet/Editor.cpp
 Source/Rivet/Input.h
 Source/Rivet/Input.cpp
 Source/Rivet/Logger.h
@@ -36,10 +38,11 @@ add_compile_definitions(
     GLFW_INCLUDE_NONE
 )
 
-target_link_libraries(Rivet glfw)
-target_link_libraries(Rivet glad)
-target_link_libraries(Rivet glm)
-target_link_libraries(Rivet spdlog)
+target_link_libraries(Rivet PUBLIC glfw)
+target_link_libraries(Rivet PUBLIC glad)
+target_link_libraries(Rivet PUBLIC glm)
+target_link_libraries(Rivet PUBLIC spdlog)
+target_link_libraries(Rivet PUBLIC imgui)
 
 target_include_directories(Rivet PUBLIC "Source" "Vendor/stb")
 

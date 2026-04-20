@@ -3,6 +3,7 @@
 #include <glad/gl.h>
 
 #include "App.h"
+#include "Editor.h"
 #include "Input.h"
 #include "Logger.h"
 #include "Window.h"

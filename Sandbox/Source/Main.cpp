@@ -3,6 +3,7 @@
 int main()
 {
     Rivet::Init("Sandbox", 1280, 720);
+    Rivet::Editor::Init(Rivet::GetNativeWindow());
     Rivet::SetClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
     Rivet::Shader shader = Rivet::LoadShader("shaders/basic.vert", "shaders/basic.frag");
@@ -91,33 +92,14 @@ int main()
         if (Rivet::IsKeyPressed(Rivet::Key::Escape))
             break;
 
-        // Validation 2: frame counter
-        /*RVT_DEBUG("Frame {}", frame++);
-
-        // Validation 3: keyboard
-        if (Rivet::IsKeyDown(Rivet::Key::W))
-            RVT_INFO("W down");
-        if (Rivet::IsKeyPressed(Rivet::Key::W))
-            RVT_INFO("W pressed (frame {})", frame);
-        if (Rivet::IsKeyReleased(Rivet::Key::W))
-            RVT_INFO("W released (frame {})", frame);
-
-        // Validation 4: mouse
-        RVT_DEBUG("Mouse pos: ({:.1f}, {:.1f})  delta: ({:.2f}, {:.2f})",
-            Rivet::GetMousePosition().x, Rivet::GetMousePosition().y,
-            Rivet::GetMouseDelta().x,    Rivet::GetMouseDelta().y);
-
-        if (Rivet::IsMouseButtonDown(Rivet::MouseButton::Left))
-            RVT_INFO("LMB down");
-        if (Rivet::IsMouseButtonPressed(Rivet::MouseButton::Left))
-            RVT_INFO("LMB pressed (frame {})", frame);
-        if (Rivet::IsMouseButtonReleased(Rivet::MouseButton::Left))
-            RVT_INFO("LMB released (frame {})", frame);*/
-
         // Draw triangle
         Rivet::UseShader(shader);
         Rivet::BindVertexArray(va);
         glDrawArrays(GL_TRIANGLES, 0, 3);
+
+        Rivet::Editor::Begin();
+        ImGui::ShowDemoWindow();
+        Rivet::Editor::End();
 
         Rivet::EndFrame();
     }
@@ -127,6 +109,7 @@ int main()
     Rivet::DeleteVertexBuffer(vbCol);
     Rivet::DeleteShader(shader);
 
+    Rivet::Editor::Shutdown();
     Rivet::Shutdown();
 
     return 0;
