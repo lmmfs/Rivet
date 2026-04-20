@@ -1,0 +1,83 @@
+Prompt 1
+We are writing AgentClinic, a place for AI agents to get relief from their humans. Look in the README.md for input from stakeholders.
+
+Prompt 2
+Let's create a "constitution" in a specs directory:
+
+mission.md
+tech-stack.md
+roadmap.md for high-level implementation order, in very small phases of work.
+Important: You must ask, grouped on these 3, before writing to disk.
+
+Prompt 3
+Identify any item on mission.md that needs clarification
+
+Prompt 4
+Identify any item on tech-stack.md that needs clarification
+
+------------------------------------------------------------
+
+Prepare for feature
+
+
+Find the next phase on specs/roadmap.md and make a branch, ask me about the feature spec. Create:
+
+A new directory YYYY-MM-DD-feature-name under specs for this feature work
+In there:
+plan.md as a series of numbered task groups.
+requirements.md for the scope, decisions, context
+validation.md for how to know the implementation succeeded and can be merged
+Refer to specs/mission.md and specs/tech-stack.md for guidance.
+
+Important: You must ask, grouped on these 3, before writing to disk.
+
+
+------------------------------------------------------------
+
+execute a feature
+
+Implement the remaining task groups.
+
+-------------------------------------------------------------
+
+Update Specs/2026-04-17-core-loop-input/plan.md and implmentation of the core loop input with an API to set the backgroung clear color
+
+
+--------------------------------------------------------------
+
+Update Specs/2026-04-19-basic-renderer and implmentation so the main loop so it prints to the console the current frame rate in frames per second
+
+
+----------------------------------------------------------------
+
+
+Replan
+
+
+I want to had 2 new features to the project: add GUI capabilities, add Buffer layouts to the created buffers
+Important: You must ask, before writing to disk.
+
+
+-------------------------------------------------------------------
+
+a struct called BufferElement with the following attributes: Name, ShaderDataType, Size, Offset, Normalized. ShaderDataType is a enum, with values Float, Float2..., the struct could have a method to convert the type to a unit32_t for the size
+
+
+--------------------------------------------------------------------
+
+
+
+Find the next phase on specs/roadmap.md and make a branch, ask me about the feature spec. Create:
+
+A new directory YYYY-MM-DD-feature-name under specs for this feature work
+In there:
+plan.md as a series of numbered task groups.
+requirements.md for the scope, decisions, context
+validation.md for how to know the implementation succeeded and can be merged
+Refer to specs/mission.md and specs/tech-stack.md for guidance.
+
+the new branch should have this name convetion "feat/<feature_name>"
+
+Important: You must ask, grouped on these 3, before writing to disk.
+
+
