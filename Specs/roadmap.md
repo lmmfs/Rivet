@@ -34,10 +34,10 @@ Each phase is a small, shippable increment. Complete one before starting the nex
 - [x] Apply layout to vertex array
 
 ## Phase 6 — GUI (Dear ImGui)
-- [ ] Dear ImGui dependency integration
-- [ ] GUI init / shutdown
-- [ ] Per-frame GUI begin / end
-- [ ] Sandbox ImGui demo
+- [x] Dear ImGui dependency integration
+- [x] GUI init / shutdown
+- [x] Per-frame GUI begin / end
+- [x] Sandbox ImGui demo
 
 ## Phase 7 — 2D Drawing
 - [ ] Textured quad rendering
