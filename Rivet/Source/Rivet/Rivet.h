@@ -15,3 +15,5 @@
 #include "Renderer/Texture.h"
 #include "Renderer/Camera2D.h"
 #include "Renderer/Renderer2D.h"
+#include "Assets/TextureManager.h"
+#include "Assets/ShaderManager.h"

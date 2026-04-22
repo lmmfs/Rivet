@@ -9,7 +9,7 @@ int main()
 
     // ---- Renderer2D & texture -------------------------------------------
     Rivet::Renderer2D::Init();
-    Rivet::Texture2D checker = Rivet::LoadTexture("assets/checker.png");
+    const Rivet::Texture2D* checker = Rivet::Assets::LoadTexture("assets/checker.png");
 
     // ---- Camera ---------------------------------------------------------
     Rivet::Camera2D camera{};
@@ -87,7 +87,7 @@ int main()
         Rivet::BeginCamera2D(camera);
         Rivet::Renderer2D::BeginScene();
         for (int i = 0; i < SpriteCount; ++i)
-            Rivet::Renderer2D::DrawTexture(checker, positions[i], spriteSize, tints[i]);
+            Rivet::Renderer2D::DrawTexture(*checker, positions[i], spriteSize, tints[i]);
         Rivet::Renderer2D::EndScene();
         Rivet::EndCamera2D();
 
@@ -111,7 +111,8 @@ int main()
         Rivet::EndFrame();
     }
 
-    Rivet::UnloadTexture(checker);
+    Rivet::Assets::UnloadAllTextures();
+    Rivet::Assets::UnloadAllShaders();
     Rivet::Renderer2D::Shutdown();
     Rivet::Editor::Shutdown();
     Rivet::Shutdown();

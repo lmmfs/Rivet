@@ -46,9 +46,9 @@ Each phase is a small, shippable increment. Complete one before starting the nex
 - [x] Texture loading via stb_image
 
 ## Phase 8 — Asset Manager
-- [ ] Resource handle system (load once, share)
-- [ ] Texture manager
-- [ ] Shader manager
+- [x] Resource handle system (load once, share)
+- [x] Texture manager
+- [x] Shader manager
 
 ## Phase 9 — Physics
 - [ ] Basic 2D collision detection (AABB)

@@ -31,6 +31,11 @@ Source/Rivet/Renderer/Camera2D.h
 Source/Rivet/Renderer/Camera2D.cpp
 Source/Rivet/Renderer/Renderer2D.h
 Source/Rivet/Renderer/Renderer2D.cpp
+Source/Rivet/Assets/AssetCache.h
+Source/Rivet/Assets/TextureManager.h
+Source/Rivet/Assets/TextureManager.cpp
+Source/Rivet/Assets/ShaderManager.h
+Source/Rivet/Assets/ShaderManager.cpp
 )
 
 add_library(Rivet STATIC)
