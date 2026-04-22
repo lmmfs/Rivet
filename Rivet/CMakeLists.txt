@@ -25,6 +25,12 @@ Source/Rivet/Renderer/Buffer.h
 Source/Rivet/Renderer/Buffer.cpp
 Source/Rivet/Renderer/BufferLayout.h
 Source/Rivet/Renderer/BufferLayout.cpp
+Source/Rivet/Renderer/Texture.h
+Source/Rivet/Renderer/Texture.cpp
+Source/Rivet/Renderer/Camera2D.h
+Source/Rivet/Renderer/Camera2D.cpp
+Source/Rivet/Renderer/Renderer2D.h
+Source/Rivet/Renderer/Renderer2D.cpp
 )
 
 add_library(Rivet STATIC)

@@ -1,114 +1,118 @@
 #include <Rivet/Rivet.h>
+#include <imgui.h>
 
 int main()
 {
-    Rivet::Init("Sandbox", 1280, 720);
+    Rivet::Init("Sandbox — 2D Drawing", 1280, 720);
     Rivet::Editor::Init(Rivet::GetNativeWindow());
-    Rivet::SetClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+    Rivet::SetClearColor(0.15f, 0.15f, 0.20f, 1.0f);
 
-    Rivet::Shader shader = Rivet::LoadShader("shaders/basic.vert", "shaders/basic.frag");
+    // ---- Renderer2D & texture -------------------------------------------
+    Rivet::Renderer2D::Init();
+    Rivet::Texture2D checker = Rivet::LoadTexture("assets/checker.png");
 
-    float positions[] = {
-        -0.5f, -0.5f, 0.0f,
-         0.5f, -0.5f, 0.0f,
-         0.0f,  0.5f, 0.0f,
+    // ---- Camera ---------------------------------------------------------
+    Rivet::Camera2D camera{};
+    const Rivet::Camera2D defaultCamera{};
+
+    // ---- Sprite positions & tints (world space) -------------------------
+    const glm::vec2 spriteSize{ 128.0f, 128.0f };
+    const glm::vec4 tints[] = {
+        { 1.0f, 1.0f, 1.0f, 1.0f },
+        { 1.0f, 0.4f, 0.4f, 1.0f },
+        { 0.4f, 1.0f, 0.4f, 1.0f },
+        { 0.6f, 0.6f, 0.2f, 1.0f },
+        { 1.0f, 0.3f, 0.4f, 1.0f },
     };
-
-    float colors[] = {
-        1.0f, 0.0f, 0.0f,   // bottom-left  — red
-        1.0f, 1.0f, 1.0f,   // bottom-right — green
-        0.0f, 0.0f, 1.0f,   // top          — blue
+    const glm::vec2 positions[] = {
+        {   0.0f,   0.0f },
+        { 160.0f,   0.0f },
+        {-160.0f,   0.0f },
+        {   0.0f, 160.0f },
+        {   0.0f,-160.0f },
     };
+    constexpr int SpriteCount = 5;
 
-    Rivet::VertexArray  va    = Rivet::CreateVertexArray();
-    Rivet::VertexBuffer vbPos = Rivet::CreateVertexBuffer(positions, sizeof(positions));
-    Rivet::VertexBuffer vbCol = Rivet::CreateVertexBuffer(colors,    sizeof(colors));
+    // ---- Timing ---------------------------------------------------------
+    double fpsTimer = glfwGetTime();
+    int    fpsCount = 0;
+    float  fps      = 0.0f;
+    double lastTime = glfwGetTime();
 
-    Rivet::BufferLayout posLayout = { { Rivet::ShaderDataType::Float3, "a_Position" } };
-    Rivet::BufferLayout colLayout = { { Rivet::ShaderDataType::Float3, "a_Color"    } };
-
-    Rivet::SetVertexArrayLayout(va, vbPos, posLayout);
-    Rivet::SetVertexArrayLayout(va, vbCol, colLayout);
-
-    uint64_t frame    = 0;
-    double   fpsTimer = glfwGetTime();
-    int      fpsCount = 0;
+    const float panSpeed  = 300.0f;
+    const float zoomSpeed = 1.5f;
 
     while (!Rivet::ShouldClose())
     {
-        Rivet::BeginFrame();
-        Rivet::Clear();
+        // ---- Delta time -------------------------------------------------
+        double now   = glfwGetTime();
+        float  delta = static_cast<float>(now - lastTime);
+        lastTime     = now;
 
-        // FPS counter — log once per second
+        // ---- FPS --------------------------------------------------------
         ++fpsCount;
-        double now = glfwGetTime();
         if (now - fpsTimer >= 1.0)
         {
-            RVT_INFO("FPS: {}", fpsCount);
-            fpsCount  = 0;
-            fpsTimer += 1.0;
+            fps      = static_cast<float>(fpsCount) / static_cast<float>(now - fpsTimer);
+            fpsCount = 0;
+            fpsTimer = now;
         }
 
-        // Drain the event queue
+        // ---- Camera input -----------------------------------------------
+        if (Rivet::IsKeyDown(Rivet::Key::W)) camera.position.y += panSpeed * delta;
+        if (Rivet::IsKeyDown(Rivet::Key::S)) camera.position.y -= panSpeed * delta;
+        if (Rivet::IsKeyDown(Rivet::Key::A)) camera.position.x -= panSpeed * delta;
+        if (Rivet::IsKeyDown(Rivet::Key::D)) camera.position.x += panSpeed * delta;
+        if (Rivet::IsKeyDown(Rivet::Key::Q)) camera.zoom *= 1.0f + zoomSpeed * delta;
+        if (Rivet::IsKeyDown(Rivet::Key::E)) camera.zoom /= 1.0f + zoomSpeed * delta;
+        if (Rivet::IsKeyPressed(Rivet::Key::R)) camera = defaultCamera;
+        if (camera.zoom < 0.05f) camera.zoom = 0.05f;
+        if (camera.zoom > 20.0f) camera.zoom = 20.0f;
+
+        // ---- Events -----------------------------------------------------
         Rivet::Event e;
         while (Rivet::PollEvent(e))
         {
-            switch (e.type)
-            {
-                case Rivet::EventType::WindowClose:
-                    RVT_INFO("[Event] WindowClose");
-                    break;
-                case Rivet::EventType::WindowResize:
-                    RVT_INFO("[Event] WindowResize: {}x{}", e.windowResize.width, e.windowResize.height);
-                    break;
-                case Rivet::EventType::WindowFocus:
-                    RVT_INFO("[Event] WindowFocus");
-                    break;
-                case Rivet::EventType::WindowLostFocus:
-                    RVT_INFO("[Event] WindowLostFocus");
-                    break;
-                case Rivet::EventType::KeyPressed:
-                    RVT_INFO("[Event] KeyPressed: key={} repeat={}", static_cast<int>(e.keyPressed.key), e.keyPressed.repeatCount);
-                    break;
-                case Rivet::EventType::KeyReleased:
-                    RVT_INFO("[Event] KeyReleased: key={}", static_cast<int>(e.keyReleased.key));
-                    break;
-                case Rivet::EventType::MouseMoved:
-                    RVT_DEBUG("[Event] MouseMoved: ({:.1f}, {:.1f})", e.mouseMoved.x, e.mouseMoved.y);
-                    break;
-                case Rivet::EventType::MouseScrolled:
-                    RVT_INFO("[Event] MouseScrolled: ({:.2f}, {:.2f})", e.mouseScrolled.xOffset, e.mouseScrolled.yOffset);
-                    break;
-                case Rivet::EventType::MouseButtonPressed:
-                    RVT_INFO("[Event] MouseButtonPressed: button={}", static_cast<int>(e.mouseButton.button));
-                    break;
-                case Rivet::EventType::MouseButtonReleased:
-                    RVT_INFO("[Event] MouseButtonReleased: button={}", static_cast<int>(e.mouseButton.button));
-                    break;
-                default: break;
-            }
+            if (e.type == Rivet::EventType::WindowResize)
+                Rivet::SetViewport(0, 0, e.windowResize.width, e.windowResize.height);
         }
 
         if (Rivet::IsKeyPressed(Rivet::Key::Escape))
             break;
 
-        // Draw triangle
-        Rivet::UseShader(shader);
-        Rivet::BindVertexArray(va);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        // ---- Render -----------------------------------------------------
+        Rivet::BeginFrame();
+        Rivet::Clear();
 
+        Rivet::BeginCamera2D(camera);
+        Rivet::Renderer2D::BeginScene();
+        for (int i = 0; i < SpriteCount; ++i)
+            Rivet::Renderer2D::DrawTexture(checker, positions[i], spriteSize, tints[i]);
+        Rivet::Renderer2D::EndScene();
+        Rivet::EndCamera2D();
+
+        // ---- ImGui overlay ----------------------------------------------
         Rivet::Editor::Begin();
-        ImGui::ShowDemoWindow();
+        ImGui::SetNextWindowPos(ImVec2(10, 10), ImGuiCond_Always);
+        ImGui::SetNextWindowBgAlpha(0.6f);
+        ImGui::Begin("Camera", nullptr,
+                     ImGuiWindowFlags_NoDecoration |
+                     ImGuiWindowFlags_AlwaysAutoResize |
+                     ImGuiWindowFlags_NoSavedSettings);
+        ImGui::Text("FPS:  %.1f", fps);
+        ImGui::Separator();
+        ImGui::Text("Pos:  (%.1f, %.1f)", camera.position.x, camera.position.y);
+        ImGui::Text("Zoom: %.3f", camera.zoom);
+        ImGui::Separator();
+        ImGui::TextDisabled("WASD=pan  Q/E=zoom  R=reset");
+        ImGui::End();
         Rivet::Editor::End();
 
         Rivet::EndFrame();
     }
 
-    Rivet::DeleteVertexArray(va);
-    Rivet::DeleteVertexBuffer(vbPos);
-    Rivet::DeleteVertexBuffer(vbCol);
-    Rivet::DeleteShader(shader);
-
+    Rivet::UnloadTexture(checker);
+    Rivet::Renderer2D::Shutdown();
     Rivet::Editor::Shutdown();
     Rivet::Shutdown();
 

@@ -40,10 +40,10 @@ Each phase is a small, shippable increment. Complete one before starting the nex
 - [x] Sandbox ImGui demo
 
 ## Phase 7 — 2D Drawing
-- [ ] Textured quad rendering
-- [ ] Sprite batching
-- [ ] Basic camera (2D orthographic)
-- [ ] Texture loading via stb_image
+- [x] Textured quad rendering
+- [x] Sprite batching
+- [x] Basic camera (2D orthographic)
+- [x] Texture loading via stb_image
 
 ## Phase 8 — Asset Manager
 - [ ] Resource handle system (load once, share)

@@ -33,3 +33,10 @@ add_custom_command(TARGET Sandbox POST_BUILD
         "$<TARGET_FILE_DIR:Sandbox>/shaders"
     COMMENT "Copying Sandbox shaders to build directory"
 )
+
+add_custom_command(TARGET Sandbox POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_SOURCE_DIR}/Sandbox/assets"
+        "$<TARGET_FILE_DIR:Sandbox>/assets"
+    COMMENT "Copying Sandbox assets to build directory"
+)

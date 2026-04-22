@@ -12,3 +12,6 @@
 #include "Renderer/Shader.h"
 #include "Renderer/Buffer.h"
 #include "Renderer/BufferLayout.h"
+#include "Renderer/Texture.h"
+#include "Renderer/Camera2D.h"
+#include "Renderer/Renderer2D.h"
