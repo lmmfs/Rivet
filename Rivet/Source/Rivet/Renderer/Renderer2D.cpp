@@ -33,10 +33,11 @@ struct QuadVertex
 
 struct State
 {
-    uint32_t vao         = 0;
-    uint32_t vbo         = 0;   // GL_DYNAMIC_DRAW
-    uint32_t ibo         = 0;   // GL_STATIC_DRAW
-    Shader   shader      = 0;
+    uint32_t vao          = 0;
+    uint32_t vbo          = 0;   // GL_DYNAMIC_DRAW
+    uint32_t ibo          = 0;   // GL_STATIC_DRAW
+    Shader   shader       = 0;
+    uint32_t whiteTexture = 0;   // 1x1 white — used by DrawQuad
 
     std::array<QuadVertex, MaxVertices> vertexBuffer{};
     uint32_t quadCount      = 0;
@@ -107,6 +108,15 @@ void Init()
     UseShader(s_State.shader);
     SetUniformInt(s_State.shader, "u_Texture", 0);
 
+    // ---- 1x1 white texture (for DrawQuad) ----------------------------------
+    uint32_t whitePixel = 0xFFFFFFFF;
+    glGenTextures(1, &s_State.whiteTexture);
+    glBindTexture(GL_TEXTURE_2D, s_State.whiteTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, &whitePixel);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
     spdlog::info("[Renderer2D] Initialized (max {} quads)", MaxQuads);
 }
 
@@ -115,6 +125,7 @@ void Shutdown()
     glDeleteVertexArrays(1, &s_State.vao);
     glDeleteBuffers(1, &s_State.vbo);
     glDeleteBuffers(1, &s_State.ibo);
+    glDeleteTextures(1, &s_State.whiteTexture);
     DeleteShader(s_State.shader);
     s_State = {};
     spdlog::info("[Renderer2D] Shutdown");
@@ -197,6 +208,31 @@ void DrawTexture(const Texture2D& tex,
     s_State.vertexBuffer[base + 2] = { x1, y1, 1.0f, 1.0f, tint.r, tint.g, tint.b, tint.a };
     // Top-left
     s_State.vertexBuffer[base + 3] = { x0, y1, 0.0f, 1.0f, tint.r, tint.g, tint.b, tint.a };
+
+    ++s_State.quadCount;
+}
+
+void DrawQuad(glm::vec2 pos, glm::vec2 size, glm::vec4 color)
+{
+    if (s_State.currentTexture != 0 && s_State.currentTexture != s_State.whiteTexture)
+        Flush();
+
+    if (s_State.quadCount >= MaxQuads)
+        Flush();
+
+    s_State.currentTexture = s_State.whiteTexture;
+
+    float x0 = pos.x - size.x * 0.5f;
+    float x1 = pos.x + size.x * 0.5f;
+    float y0 = pos.y - size.y * 0.5f;
+    float y1 = pos.y + size.y * 0.5f;
+
+    uint32_t base = s_State.quadCount * 4;
+
+    s_State.vertexBuffer[base + 0] = { x0, y0, 0.0f, 0.0f, color.r, color.g, color.b, color.a };
+    s_State.vertexBuffer[base + 1] = { x1, y0, 1.0f, 0.0f, color.r, color.g, color.b, color.a };
+    s_State.vertexBuffer[base + 2] = { x1, y1, 1.0f, 1.0f, color.r, color.g, color.b, color.a };
+    s_State.vertexBuffer[base + 3] = { x0, y1, 0.0f, 1.0f, color.r, color.g, color.b, color.a };
 
     ++s_State.quadCount;
 }

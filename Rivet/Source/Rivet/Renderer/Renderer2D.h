@@ -29,6 +29,9 @@ namespace Rivet {
                          glm::vec2        size,
                          glm::vec4        tint = { 1, 1, 1, 1 });
 
+        // Draw a solid-color quad (no texture needed).
+        void DrawQuad(glm::vec2 pos, glm::vec2 size, glm::vec4 color);
+
         // Internal — used by Camera2D.
         void SetViewProjection(const glm::mat4& vp);
 

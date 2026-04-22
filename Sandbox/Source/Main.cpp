@@ -11,6 +11,18 @@ int main()
     Rivet::Renderer2D::Init();
     const Rivet::Texture2D* checker = Rivet::Assets::LoadTexture("assets/checker.png");
 
+    // ---- Physics ------------------------------------------------------------
+    // Scale: 1 metre = 80 pixels
+    constexpr float PPM = 80.0f;
+
+    Rivet::Physics::Init({ 0.0f, -9.8f });
+
+    // Ground: centre at (0, -3 m), half-extents (6 m, 0.2 m)
+    auto groundBody = Rivet::Physics::AddStaticBody ({ 0.0f, -3.0f }, { 6.0f, 0.2f });
+    // Two dynamic boxes
+    auto boxA = Rivet::Physics::AddDynamicBody({ -1.0f,  5.0f }, { 0.4f, 0.4f });
+    auto boxB = Rivet::Physics::AddDynamicBody({  1.0f,  8.0f }, { 0.4f, 0.4f });
+
     // ---- Camera ---------------------------------------------------------
     Rivet::Camera2D camera{};
     const Rivet::Camera2D defaultCamera{};
@@ -80,6 +92,9 @@ int main()
         if (Rivet::IsKeyPressed(Rivet::Key::Escape))
             break;
 
+        // ---- Physics step -----------------------------------------------
+        Rivet::Physics::Step(delta);
+
         // ---- Render -----------------------------------------------------
         Rivet::BeginFrame();
         Rivet::Clear();
@@ -88,6 +103,22 @@ int main()
         Rivet::Renderer2D::BeginScene();
         for (int i = 0; i < SpriteCount; ++i)
             Rivet::Renderer2D::DrawTexture(*checker, positions[i], spriteSize, tints[i]);
+
+        // Physics bodies (physics coords * PPM → pixels)
+        {
+            glm::vec2 gPos = Rivet::Physics::GetPosition(groundBody) * PPM;
+            Rivet::Renderer2D::DrawQuad(gPos, { 6.0f * 2.0f * PPM, 0.2f * 2.0f * PPM },
+                                        { 0.55f, 0.45f, 0.35f, 1.0f });
+
+            glm::vec2 aPos = Rivet::Physics::GetPosition(boxA) * PPM;
+            Rivet::Renderer2D::DrawQuad(aPos, { 0.4f * 2.0f * PPM, 0.4f * 2.0f * PPM },
+                                        { 0.9f, 0.3f, 0.3f, 1.0f });
+
+            glm::vec2 bPos = Rivet::Physics::GetPosition(boxB) * PPM;
+            Rivet::Renderer2D::DrawQuad(bPos, { 0.4f * 2.0f * PPM, 0.4f * 2.0f * PPM },
+                                        { 0.3f, 0.6f, 0.9f, 1.0f });
+        }
+
         Rivet::Renderer2D::EndScene();
         Rivet::EndCamera2D();
 
@@ -113,6 +144,7 @@ int main()
 
     Rivet::Assets::UnloadAllTextures();
     Rivet::Assets::UnloadAllShaders();
+    Rivet::Physics::Shutdown();
     Rivet::Renderer2D::Shutdown();
     Rivet::Editor::Shutdown();
     Rivet::Shutdown();

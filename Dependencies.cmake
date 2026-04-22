@@ -102,3 +102,20 @@ target_include_directories(imgui PUBLIC
 )
 target_link_libraries(imgui PUBLIC glfw OpenGL::GL)
 set_target_properties(imgui PROPERTIES FOLDER "Dependencies")
+
+# Box2D
+FetchContent_Declare(
+    box2d
+    DOWNLOAD_EXTRACT_TIMESTAMP OFF
+    URL https://github.com/erincatto/box2d/archive/refs/tags/v2.4.1.zip
+)
+FetchContent_GetProperties(box2d)
+if(NOT box2d_POPULATED)
+    set(FETCHCONTENT_QUIET NO)
+    set(BOX2D_BUILD_UNIT_TESTS OFF CACHE BOOL "" FORCE)
+    set(BOX2D_BUILD_TESTBED    OFF CACHE BOOL "" FORCE)
+    set(BOX2D_BUILD_DOCS       OFF CACHE BOOL "" FORCE)
+    FetchContent_Populate(box2d)
+    add_subdirectory(${box2d_SOURCE_DIR} ${box2d_BINARY_DIR})
+endif()
+set_target_properties(box2d PROPERTIES FOLDER "Dependencies")

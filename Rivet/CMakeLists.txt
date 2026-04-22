@@ -36,6 +36,9 @@ Source/Rivet/Assets/TextureManager.h
 Source/Rivet/Assets/TextureManager.cpp
 Source/Rivet/Assets/ShaderManager.h
 Source/Rivet/Assets/ShaderManager.cpp
+Source/Rivet/Physics/PhysicsTypes.h
+Source/Rivet/Physics/Physics.h
+Source/Rivet/Physics/Physics.cpp
 )
 
 add_library(Rivet STATIC)
@@ -54,6 +57,7 @@ target_link_libraries(Rivet PUBLIC glad)
 target_link_libraries(Rivet PUBLIC glm)
 target_link_libraries(Rivet PUBLIC spdlog)
 target_link_libraries(Rivet PUBLIC imgui)
+target_link_libraries(Rivet PUBLIC box2d)
 
 target_include_directories(Rivet PUBLIC "Source" "Vendor/stb")
 
