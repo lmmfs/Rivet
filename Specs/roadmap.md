@@ -51,9 +51,9 @@ Each phase is a small, shippable increment. Complete one before starting the nex
 - [x] Shader manager
 
 ## Phase 9 — Physics
-- [ ] Basic 2D collision detection (AABB)
-- [ ] Simple rigid-body response
-- [ ] Evaluate integration of a physics library
+- [x] Basic 2D collision detection (AABB)
+- [x] Simple rigid-body response
+- [x] Evaluate integration of a physics library
 
 ## Phase 10 — Audio
 - [ ] Choose & integrate audio library (e.g. miniaudio)
