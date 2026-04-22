@@ -92,6 +92,16 @@ int main()
         if (Rivet::IsKeyPressed(Rivet::Key::Escape))
             break;
 
+        // ---- Box A controls (arrow keys) --------------------------------
+        constexpr float moveForce = 12.0f;  // metres/s impulse per frame
+        glm::vec2 vel = Rivet::Physics::GetPosition(boxA); // reuse as scratch
+        vel = { 0.0f, 0.0f };
+        if (Rivet::IsKeyDown(Rivet::Key::Left))  vel.x -= moveForce;
+        if (Rivet::IsKeyDown(Rivet::Key::Right)) vel.x += moveForce;
+        if (Rivet::IsKeyPressed(Rivet::Key::Up)) vel.y  = moveForce * 2.5f; // jump
+        if (vel.x != 0.0f || vel.y != 0.0f)
+            Rivet::Physics::ApplyImpulse(boxA, vel * delta);
+
         // ---- Physics step -----------------------------------------------
         Rivet::Physics::Step(delta);
 
@@ -136,6 +146,7 @@ int main()
         ImGui::Text("Zoom: %.3f", camera.zoom);
         ImGui::Separator();
         ImGui::TextDisabled("WASD=pan  Q/E=zoom  R=reset");
+        ImGui::TextDisabled("Arrows=move red box  Up=jump");
         ImGui::End();
         Rivet::Editor::End();
 
