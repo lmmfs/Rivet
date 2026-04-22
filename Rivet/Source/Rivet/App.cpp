@@ -2,6 +2,7 @@
 #include "Window.h"
 #include "Input.h"
 #include "Logger.h"
+#include "Audio/AudioEngine.h"
 
 #include <glad/gl.h>
 
@@ -25,6 +26,7 @@ namespace Rivet {
         s_Window->Create();
 
         Input::Init(s_Window->GetHandle());
+        Audio::Init();
 
         RVT_CORE_INFO("Rivet initialized: {}x{}", width, height);
     }
@@ -48,6 +50,7 @@ namespace Rivet {
     void Shutdown()
     {
         RVT_CORE_INFO("Rivet shutdown");
+        Audio::Shutdown();
         s_Window.reset();
         glfwTerminate();
     }

@@ -17,4 +17,6 @@
 #include "Renderer/Renderer2D.h"
 #include "Assets/TextureManager.h"
 #include "Assets/ShaderManager.h"
+#include "Assets/AudioManager.h"
 #include "Physics/Physics.h"
+#include "Audio/Audio.h"

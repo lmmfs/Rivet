@@ -5,6 +5,8 @@
 set(SOURCES
 Vendor/stb/stb_image.h
 Vendor/stb/stb_image.cpp
+Vendor/miniaudio/miniaudio.h
+Vendor/miniaudio/miniaudio.cpp
 Source/Rvtph.h
 Source/Rivet/Window.h
 Source/Rivet/Window.cpp
@@ -39,6 +41,13 @@ Source/Rivet/Assets/ShaderManager.cpp
 Source/Rivet/Physics/PhysicsTypes.h
 Source/Rivet/Physics/Physics.h
 Source/Rivet/Physics/Physics.cpp
+Source/Rivet/Audio/AudioEngine.h
+Source/Rivet/Audio/AudioEngine.cpp
+Source/Rivet/Audio/Sound.h
+Source/Rivet/Audio/Audio.h
+Source/Rivet/Audio/Audio.cpp
+Source/Rivet/Assets/AudioManager.h
+Source/Rivet/Assets/AudioManager.cpp
 )
 
 add_library(Rivet STATIC)
@@ -59,7 +68,12 @@ target_link_libraries(Rivet PUBLIC spdlog)
 target_link_libraries(Rivet PUBLIC imgui)
 target_link_libraries(Rivet PUBLIC box2d)
 
-target_include_directories(Rivet PUBLIC "Source" "Vendor/stb")
+target_include_directories(Rivet PUBLIC "Source" "Vendor/stb" "Vendor/miniaudio")
+
+# miniaudio needs dl, pthread, and m on Linux
+if(UNIX)
+    target_link_libraries(Rivet PUBLIC dl pthread m)
+endif()
 
 target_precompile_headers(Rivet PRIVATE
   "${CMAKE_CURRENT_SOURCE_DIR}/Source/Rvtph.h"

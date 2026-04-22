@@ -1,5 +1,6 @@
 #include <Rivet/Rivet.h>
 #include <imgui.h>
+#include <cmath>
 
 int main()
 {
@@ -22,6 +23,23 @@ int main()
     // Two dynamic boxes
     auto boxA = Rivet::Physics::AddDynamicBody({ -1.0f,  5.0f }, { 0.4f, 0.4f });
     auto boxB = Rivet::Physics::AddDynamicBody({  1.0f,  8.0f }, { 0.4f, 0.4f });
+
+    // ---- Audio ---------------------------------------------------------------
+    // Load assets (AudioEngine is already running, started by Rivet::Init)
+    Rivet::Audio::Sound* music  = Rivet::Assets::LoadSound("assets/audio/music.wav");
+    Rivet::Audio::Sound* effect = Rivet::Assets::LoadSound("assets/audio/effect.wav");
+
+    // Start background music as a looping track at reduced volume
+    if (music)
+    {
+        Rivet::Audio::SetVolume(*music, 0.4f);
+        Rivet::Audio::SetLoop(*music, true);
+        Rivet::Audio::Play(*music);
+    }
+
+    // Positional emitter — will orbit the listener each frame
+    float emitterAngle = 0.0f;
+    constexpr float emitterRadius = 400.0f; // pixels
 
     // ---- Camera ---------------------------------------------------------
     Rivet::Camera2D camera{};
@@ -92,6 +110,33 @@ int main()
         if (Rivet::IsKeyPressed(Rivet::Key::Escape))
             break;
 
+        // ---- Audio update -----------------------------------------------
+        // Orbit the effect emitter around the origin so positional panning
+        // is audible.
+        emitterAngle += delta * 0.8f; // ~0.8 rad/s orbit
+        float ex = emitterRadius * std::cos(emitterAngle);
+        float ey = emitterRadius * std::sin(emitterAngle);
+
+        // Listener stays at world origin (camera-independent for simplicity)
+        Rivet::Audio::SetListenerPosition(0.0f, 0.0f);
+
+        if (effect)
+            Rivet::Audio::SetPosition(*effect, ex, ey);
+
+        // Space = play one-shot effect; M = toggle music
+        if (Rivet::IsKeyPressed(Rivet::Key::Space) && effect)
+        {
+            Rivet::Audio::SetVolume(*effect, 1.0f);
+            Rivet::Audio::Play(*effect);
+        }
+        if (Rivet::IsKeyPressed(Rivet::Key::M) && music)
+        {
+            if (Rivet::Audio::IsPlaying(*music))
+                Rivet::Audio::Pause(*music);
+            else
+                Rivet::Audio::Resume(*music);
+        }
+
         // ---- Box A controls (arrow keys) --------------------------------
         constexpr float moveForce = 12.0f;  // metres/s impulse per frame
         glm::vec2 vel = Rivet::Physics::GetPosition(boxA); // reuse as scratch
@@ -145,8 +190,12 @@ int main()
         ImGui::Text("Pos:  (%.1f, %.1f)", camera.position.x, camera.position.y);
         ImGui::Text("Zoom: %.3f", camera.zoom);
         ImGui::Separator();
+        ImGui::Text("Music: %s", (music && Rivet::Audio::IsPlaying(*music)) ? "playing" : "paused");
+        ImGui::Text("Emitter: (%.0f, %.0f)", ex, ey);
+        ImGui::Separator();
         ImGui::TextDisabled("WASD=pan  Q/E=zoom  R=reset");
         ImGui::TextDisabled("Arrows=move red box  Up=jump");
+        ImGui::TextDisabled("Space=effect  M=toggle music");
         ImGui::End();
         Rivet::Editor::End();
 
@@ -155,6 +204,7 @@ int main()
 
     Rivet::Assets::UnloadAllTextures();
     Rivet::Assets::UnloadAllShaders();
+    Rivet::Assets::UnloadAllSounds();
     Rivet::Physics::Shutdown();
     Rivet::Renderer2D::Shutdown();
     Rivet::Editor::Shutdown();
