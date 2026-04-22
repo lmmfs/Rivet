@@ -56,6 +56,6 @@ Each phase is a small, shippable increment. Complete one before starting the nex
 - [x] Evaluate integration of a physics library
 
 ## Phase 10 — Audio
-- [ ] Choose & integrate audio library (e.g. miniaudio)
-- [ ] Sound loading and playback
-- [ ] Volume / pause / stop controls
+- [x] Choose & integrate audio library (e.g. miniaudio)
+- [x] Sound loading and playback
+- [x] Volume / pause / stop controls
