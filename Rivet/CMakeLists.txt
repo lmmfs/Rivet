@@ -2,9 +2,25 @@
 # Rivet
 #
 
+# Download stb_truetype.h if not present
+if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Vendor/stb/stb_truetype.h")
+    message(STATUS "Downloading stb_truetype.h...")
+    file(DOWNLOAD
+        "https://raw.githubusercontent.com/nothings/stb/master/stb_truetype.h"
+        "${CMAKE_CURRENT_SOURCE_DIR}/Vendor/stb/stb_truetype.h"
+        STATUS DOWNLOAD_STATUS
+    )
+    list(GET DOWNLOAD_STATUS 0 STATUS_CODE)
+    if(NOT STATUS_CODE EQUAL 0)
+        message(FATAL_ERROR "[Rivet] Failed to download stb_truetype.h — check internet connection")
+    endif()
+endif()
+
 set(SOURCES
 Vendor/stb/stb_image.h
 Vendor/stb/stb_image.cpp
+Vendor/stb/stb_truetype.h
+Vendor/stb/stb_truetype.cpp
 Vendor/miniaudio/miniaudio.h
 Vendor/miniaudio/miniaudio.cpp
 Source/Rvtph.h
@@ -48,6 +64,11 @@ Source/Rivet/Audio/Audio.h
 Source/Rivet/Audio/Audio.cpp
 Source/Rivet/Assets/AudioManager.h
 Source/Rivet/Assets/AudioManager.cpp
+Source/Rivet/UI/Font.h
+Source/Rivet/UI/Font.cpp
+Source/Rivet/UI/UI.h
+Source/Rivet/UI/UI.cpp
+Source/Rivet/UI.h
 )
 
 add_library(Rivet STATIC)

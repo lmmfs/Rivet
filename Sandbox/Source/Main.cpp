@@ -13,39 +13,29 @@ int main()
     const Rivet::Texture2D* checker = Rivet::Assets::LoadTexture("assets/checker.png");
 
     // ---- Physics ------------------------------------------------------------
-    // Scale: 1 metre = 80 pixels
     constexpr float PPM = 80.0f;
-
     Rivet::Physics::Init({ 0.0f, -9.8f });
-
-    // Ground: centre at (0, -3 m), half-extents (6 m, 0.2 m)
     auto groundBody = Rivet::Physics::AddStaticBody ({ 0.0f, -3.0f }, { 6.0f, 0.2f });
-    // Two dynamic boxes
     auto boxA = Rivet::Physics::AddDynamicBody({ -1.0f,  5.0f }, { 0.4f, 0.4f });
     auto boxB = Rivet::Physics::AddDynamicBody({  1.0f,  8.0f }, { 0.4f, 0.4f });
 
     // ---- Audio ---------------------------------------------------------------
-    // Load assets (AudioEngine is already running, started by Rivet::Init)
     Rivet::Audio::Sound* music  = Rivet::Assets::LoadSound("assets/audio/music.wav");
     Rivet::Audio::Sound* effect = Rivet::Assets::LoadSound("assets/audio/effect.wav");
-
-    // Start background music as a looping track at reduced volume
     if (music)
     {
         Rivet::Audio::SetVolume(*music, 0.4f);
         Rivet::Audio::SetLoop(*music, true);
         Rivet::Audio::Play(*music);
     }
-
-    // Positional emitter — will orbit the listener each frame
     float emitterAngle = 0.0f;
-    constexpr float emitterRadius = 400.0f; // pixels
+    constexpr float emitterRadius = 400.0f;
 
     // ---- Camera ---------------------------------------------------------
     Rivet::Camera2D camera{};
     const Rivet::Camera2D defaultCamera{};
 
-    // ---- Sprite positions & tints (world space) -------------------------
+    // ---- Sprite positions & tints ---------------------------------------
     const glm::vec2 spriteSize{ 128.0f, 128.0f };
     const glm::vec4 tints[] = {
         { 1.0f, 1.0f, 1.0f, 1.0f },
@@ -63,23 +53,54 @@ int main()
     };
     constexpr int SpriteCount = 5;
 
+    // ---- UI setup -------------------------------------------------------
+    Rivet::UI::Font uiFont = Rivet::UI::LoadFont("assets/fonts/font.ttf", 18.0f);
+
+    // FPS panel (top-left)
+    Rivet::UI::Panel fpsPanel;
+    fpsPanel.position = { 8.0f, 8.0f };
+    fpsPanel.size     = { 180.0f, 28.0f };
+    fpsPanel.color    = { 0.10f, 0.10f, 0.10f, 0.80f };
+
+    Rivet::UI::Label fpsLabel;
+    fpsLabel.position = { 12.0f, 14.0f };
+    fpsLabel.font     = &uiFont;
+    fpsLabel.color    = { 0.9f, 0.9f, 0.3f, 1.0f };
+
+    // Button
+    Rivet::UI::Button demoButton;
+    demoButton.panel.position = { 8.0f, 44.0f };
+    demoButton.panel.size     = { 180.0f, 34.0f };
+    demoButton.panel.color    = { 0.20f, 0.45f, 0.20f, 0.90f };
+    demoButton.label.font     = &uiFont;
+    demoButton.label.text     = "Click me!";
+    demoButton.label.color    = { 1.0f, 1.0f, 1.0f, 1.0f };
+    demoButton.onClick        = []() { RVT_INFO("Button clicked"); };
+
+    // Health bar
+    Rivet::UI::HealthBar healthBar;
+    healthBar.position = { 8.0f, 86.0f };
+    healthBar.size     = { 180.0f, 18.0f };
+    healthBar.bgColor  = { 0.25f, 0.08f, 0.08f, 0.90f };
+    healthBar.fgColor  = { 0.85f, 0.18f, 0.18f, 0.90f };
+
     // ---- Timing ---------------------------------------------------------
     double fpsTimer = glfwGetTime();
     int    fpsCount = 0;
     float  fps      = 0.0f;
     double lastTime = glfwGetTime();
+    float  elapsed  = 0.0f;
 
     const float panSpeed  = 300.0f;
     const float zoomSpeed = 1.5f;
 
     while (!Rivet::ShouldClose())
     {
-        // ---- Delta time -------------------------------------------------
         double now   = glfwGetTime();
         float  delta = static_cast<float>(now - lastTime);
         lastTime     = now;
+        elapsed     += delta;
 
-        // ---- FPS --------------------------------------------------------
         ++fpsCount;
         if (now - fpsTimer >= 1.0)
         {
@@ -111,19 +132,12 @@ int main()
             break;
 
         // ---- Audio update -----------------------------------------------
-        // Orbit the effect emitter around the origin so positional panning
-        // is audible.
-        emitterAngle += delta * 0.8f; // ~0.8 rad/s orbit
+        emitterAngle += delta * 0.8f;
         float ex = emitterRadius * std::cos(emitterAngle);
         float ey = emitterRadius * std::sin(emitterAngle);
-
-        // Listener stays at world origin (camera-independent for simplicity)
         Rivet::Audio::SetListenerPosition(0.0f, 0.0f);
+        if (effect) Rivet::Audio::SetPosition(*effect, ex, ey);
 
-        if (effect)
-            Rivet::Audio::SetPosition(*effect, ex, ey);
-
-        // Space = play one-shot effect; M = toggle music
         if (Rivet::IsKeyPressed(Rivet::Key::Space) && effect)
         {
             Rivet::Audio::SetVolume(*effect, 1.0f);
@@ -131,55 +145,63 @@ int main()
         }
         if (Rivet::IsKeyPressed(Rivet::Key::M) && music)
         {
-            if (Rivet::Audio::IsPlaying(*music))
-                Rivet::Audio::Pause(*music);
-            else
-                Rivet::Audio::Resume(*music);
+            if (Rivet::Audio::IsPlaying(*music)) Rivet::Audio::Pause(*music);
+            else                                 Rivet::Audio::Resume(*music);
         }
 
-        // ---- Box A controls (arrow keys) --------------------------------
-        constexpr float moveForce = 12.0f;  // metres/s impulse per frame
-        glm::vec2 vel = Rivet::Physics::GetPosition(boxA); // reuse as scratch
-        vel = { 0.0f, 0.0f };
+        // ---- Box A controls ---------------------------------------------
+        constexpr float moveForce = 12.0f;
+        glm::vec2 vel = { 0.0f, 0.0f };
         if (Rivet::IsKeyDown(Rivet::Key::Left))  vel.x -= moveForce;
         if (Rivet::IsKeyDown(Rivet::Key::Right)) vel.x += moveForce;
-        if (Rivet::IsKeyPressed(Rivet::Key::Up)) vel.y  = moveForce * 2.5f; // jump
+        if (Rivet::IsKeyPressed(Rivet::Key::Up)) vel.y  = moveForce * 2.5f;
         if (vel.x != 0.0f || vel.y != 0.0f)
             Rivet::Physics::ApplyImpulse(boxA, vel * delta);
 
-        // ---- Physics step -----------------------------------------------
         Rivet::Physics::Step(delta);
+
+        // ---- UI update --------------------------------------------------
+        glm::vec2 mousePos   = Rivet::GetMousePosition();
+        bool      leftClick  = Rivet::IsMouseButtonPressed(Rivet::MouseButton::Left);
+
+        fpsLabel.text    = "FPS: " + std::to_string(static_cast<int>(fps));
+        healthBar.fill   = (std::sin(elapsed * 0.8f) * 0.5f + 0.5f);   // 0..1 sine wave
+        Rivet::UI::UpdateButton(demoButton, mousePos, leftClick);
 
         // ---- Render -----------------------------------------------------
         Rivet::BeginFrame();
         Rivet::Clear();
 
+        // World scene
         Rivet::BeginCamera2D(camera);
         Rivet::Renderer2D::BeginScene();
         for (int i = 0; i < SpriteCount; ++i)
             Rivet::Renderer2D::DrawTexture(*checker, positions[i], spriteSize, tints[i]);
-
-        // Physics bodies (physics coords * PPM → pixels)
         {
             glm::vec2 gPos = Rivet::Physics::GetPosition(groundBody) * PPM;
             Rivet::Renderer2D::DrawQuad(gPos, { 6.0f * 2.0f * PPM, 0.2f * 2.0f * PPM },
                                         { 0.55f, 0.45f, 0.35f, 1.0f });
-
             glm::vec2 aPos = Rivet::Physics::GetPosition(boxA) * PPM;
             Rivet::Renderer2D::DrawQuad(aPos, { 0.4f * 2.0f * PPM, 0.4f * 2.0f * PPM },
                                         { 0.9f, 0.3f, 0.3f, 1.0f });
-
             glm::vec2 bPos = Rivet::Physics::GetPosition(boxB) * PPM;
             Rivet::Renderer2D::DrawQuad(bPos, { 0.4f * 2.0f * PPM, 0.4f * 2.0f * PPM },
                                         { 0.3f, 0.6f, 0.9f, 1.0f });
         }
-
         Rivet::Renderer2D::EndScene();
         Rivet::EndCamera2D();
 
-        // ---- ImGui overlay ----------------------------------------------
+        // In-game UI (screen space, rendered over the world)
+        Rivet::UI::BeginScene();
+        Rivet::UI::DrawPanel(fpsPanel);
+        Rivet::UI::DrawLabel(fpsLabel);
+        Rivet::UI::DrawButton(demoButton);
+        Rivet::UI::DrawHealthBar(healthBar);
+        Rivet::UI::EndScene();
+
+        // Debug overlay (ImGui)
         Rivet::Editor::Begin();
-        ImGui::SetNextWindowPos(ImVec2(10, 10), ImGuiCond_Always);
+        ImGui::SetNextWindowPos(ImVec2(10, 120), ImGuiCond_Always);
         ImGui::SetNextWindowBgAlpha(0.6f);
         ImGui::Begin("Camera", nullptr,
                      ImGuiWindowFlags_NoDecoration |
@@ -202,6 +224,7 @@ int main()
         Rivet::EndFrame();
     }
 
+    Rivet::UI::UnloadFont(uiFont);
     Rivet::Assets::UnloadAllTextures();
     Rivet::Assets::UnloadAllShaders();
     Rivet::Assets::UnloadAllSounds();
@@ -212,4 +235,3 @@ int main()
 
     return 0;
 }
-

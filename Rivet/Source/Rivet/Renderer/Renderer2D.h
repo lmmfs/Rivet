@@ -32,6 +32,15 @@ namespace Rivet {
         // Draw a solid-color quad (no texture needed).
         void DrawQuad(glm::vec2 pos, glm::vec2 size, glm::vec4 color);
 
+        // Draw a sub-region of a texture (e.g. glyph from a font atlas).
+        // uvMin/uvMax are normalised UV coordinates (0-1).
+        void DrawTextureRegion(const Texture2D& tex,
+                               glm::vec2        pos,
+                               glm::vec2        size,
+                               glm::vec2        uvMin,
+                               glm::vec2        uvMax,
+                               glm::vec4        tint = { 1, 1, 1, 1 });
+
         // Internal — used by Camera2D.
         void SetViewProjection(const glm::mat4& vp);
 

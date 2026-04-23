@@ -237,6 +237,36 @@ void DrawQuad(glm::vec2 pos, glm::vec2 size, glm::vec4 color)
     ++s_State.quadCount;
 }
 
+void DrawTextureRegion(const Texture2D& tex,
+                       glm::vec2        pos,
+                       glm::vec2        size,
+                       glm::vec2        uvMin,
+                       glm::vec2        uvMax,
+                       glm::vec4        tint)
+{
+    if (s_State.currentTexture != 0 && s_State.currentTexture != tex.id)
+        Flush();
+
+    if (s_State.quadCount >= MaxQuads)
+        Flush();
+
+    s_State.currentTexture = tex.id;
+
+    float x0 = pos.x - size.x * 0.5f;
+    float x1 = pos.x + size.x * 0.5f;
+    float y0 = pos.y - size.y * 0.5f;
+    float y1 = pos.y + size.y * 0.5f;
+
+    uint32_t base = s_State.quadCount * 4;
+
+    s_State.vertexBuffer[base + 0] = { x0, y0, uvMin.x, uvMin.y, tint.r, tint.g, tint.b, tint.a };
+    s_State.vertexBuffer[base + 1] = { x1, y0, uvMax.x, uvMin.y, tint.r, tint.g, tint.b, tint.a };
+    s_State.vertexBuffer[base + 2] = { x1, y1, uvMax.x, uvMax.y, tint.r, tint.g, tint.b, tint.a };
+    s_State.vertexBuffer[base + 3] = { x0, y1, uvMin.x, uvMax.y, tint.r, tint.g, tint.b, tint.a };
+
+    ++s_State.quadCount;
+}
+
 // ---------------------------------------------------------------------------
 // Camera
 // ---------------------------------------------------------------------------

@@ -61,10 +61,10 @@ Each phase is a small, shippable increment. Complete one before starting the nex
 - [x] Volume / pause / stop controls
 
 ## Phase 11 — UI Panels
-- [ ] Font asset loading & management
-- [ ] Panel component
-- [ ] Label component
-- [ ] Button component
+- [x] Font asset loading & management
+- [x] Panel component
+- [x] Label component
+- [x] Button component
 
 ## Phase 12 — README Update
 - [ ] Project overview & description
