@@ -59,3 +59,14 @@ Each phase is a small, shippable increment. Complete one before starting the nex
 - [x] Choose & integrate audio library (e.g. miniaudio)
 - [x] Sound loading and playback
 - [x] Volume / pause / stop controls
+
+## Phase 11 — UI Panels
+- [ ] Font asset loading & management
+- [ ] Panel component
+- [ ] Label component
+- [ ] Button component
+
+## Phase 12 — README Update
+- [ ] Project overview & description
+- [ ] Build & setup instructions
+- [ ] Feature list / capabilities
