@@ -69,10 +69,10 @@ Phases 1–11 established the 2D foundation. Phases 12 onward extend Rivet into 
 - [x] Button component
 
 ## Phase 12 — Module Restructure
-- [ ] Reorganise source into Core/, Renderer/2D/, Renderer/3D/, Physics/2D/, Physics/3D/
-- [ ] Shared renderer primitives (Shader, Buffer, Texture) moved to Renderer/Common/
-- [ ] Umbrella header updated to reflect module layout
-- [ ] Existing 2D functionality verified unchanged after move
+- [x] Reorganise source into Core/, Renderer/2D/, Renderer/3D/, Physics/2D/, Physics/3D/
+- [x] Shared renderer primitives (Shader, Buffer, Texture) moved to Renderer/Common/
+- [x] Umbrella header updated to reflect module layout
+- [x] Existing 2D functionality verified unchanged after move
 
 ## Phase 13 — 3D Renderer
 - [ ] 3D camera (perspective projection, look-at)
