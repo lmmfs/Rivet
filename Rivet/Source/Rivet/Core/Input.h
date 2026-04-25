@@ -83,6 +83,7 @@ namespace Rivet {
 
     glm::vec2 GetMousePosition();
     glm::vec2 GetMouseDelta();
+    float     GetMouseScroll();   // accumulated scroll since last frame (positive = up)
 
     bool IsMouseButtonDown(MouseButton btn);
     bool IsMouseButtonPressed(MouseButton btn);

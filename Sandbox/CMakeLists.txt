@@ -4,6 +4,10 @@
 
 set(SOURCES
     Source/Main.cpp
+    Source/Scene2D.h
+    Source/Scene2D.cpp
+    Source/Scene3D.h
+    Source/Scene3D.cpp
 )
 
 add_executable(Sandbox)

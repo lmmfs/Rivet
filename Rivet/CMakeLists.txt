@@ -69,6 +69,13 @@ Source/Rivet/Renderer/2D/Camera.h
 Source/Rivet/Renderer/2D/Camera.cpp
 Source/Rivet/Renderer/2D/Renderer.h
 Source/Rivet/Renderer/2D/Renderer.cpp
+# Renderer — 3D
+Source/Rivet/Renderer/3D/Camera3D.h
+Source/Rivet/Renderer/3D/Camera3D.cpp
+Source/Rivet/Renderer/3D/Mesh.h
+Source/Rivet/Renderer/3D/Mesh.cpp
+Source/Rivet/Renderer/3D/ObjLoader.h
+Source/Rivet/Renderer/3D/ObjLoader.cpp
 # Physics — 2D
 Source/Rivet/Physics/2D/PhysicsTypes.h
 Source/Rivet/Physics/2D/Physics.h

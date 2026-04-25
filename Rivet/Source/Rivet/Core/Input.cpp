@@ -15,6 +15,14 @@ namespace {
     glm::vec2 s_CurrentMousePos{};
     glm::vec2 s_PreviousMousePos{};
 
+    float s_ScrollAccum   = 0.0f;  // accumulates between frames
+    float s_ScrollCurrent = 0.0f;  // value read during current frame
+
+    void ScrollCallback(GLFWwindow*, double /*x*/, double yOffset)
+    {
+        s_ScrollAccum += static_cast<float>(yOffset);
+    }
+
 }
 
 namespace Rivet::Input {
@@ -22,6 +30,7 @@ namespace Rivet::Input {
     void Init(GLFWwindow* handle)
     {
         s_Handle = handle;
+        glfwSetScrollCallback(handle, ScrollCallback);
     }
 
     void UpdateState()
@@ -30,6 +39,10 @@ namespace Rivet::Input {
         s_PreviousKeys         = s_CurrentKeys;
         s_PreviousMouseButtons = s_CurrentMouseButtons;
         s_PreviousMousePos     = s_CurrentMousePos;
+
+        // Consume accumulated scroll
+        s_ScrollCurrent = s_ScrollAccum;
+        s_ScrollAccum   = 0.0f;
 
         // Sample current keyboard state
         for (int i = 0; i <= GLFW_KEY_LAST; ++i)
@@ -82,6 +95,11 @@ namespace Rivet {
     glm::vec2 GetMouseDelta()
     {
         return s_CurrentMousePos - s_PreviousMousePos;
+    }
+
+    float GetMouseScroll()
+    {
+        return s_ScrollCurrent;
     }
 
     bool IsMouseButtonDown(MouseButton btn)

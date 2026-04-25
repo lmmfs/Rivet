@@ -26,5 +26,10 @@
 #include "Renderer/2D/Camera.h"
 #include "Renderer/2D/Renderer.h"
 
+// Renderer — 3D
+#include "Renderer/3D/Camera3D.h"
+#include "Renderer/3D/Mesh.h"
+#include "Renderer/3D/ObjLoader.h"
+
 // Physics — 2D
 #include "Physics/2D/Physics.h"
