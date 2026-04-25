@@ -1,5 +1,5 @@
-#include "Renderer2D.h"
-#include "Shader.h"
+#include "Renderer.h"
+#include "../Common/Shader.h"
 
 #include <glad/gl.h>
 #include <glm/gtc/matrix_transform.hpp>

@@ -1,7 +1,7 @@
 #include "UI.h"
 #include "../App.h"
-#include "../Renderer/Renderer2D.h"
-#include "../Renderer/Texture.h"
+#include "../../Renderer/2D/Renderer.h"
+#include "../../Renderer/Common/Texture.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <algorithm>

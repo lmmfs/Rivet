@@ -1,7 +1,7 @@
 #pragma once
 
 #include "AssetCache.h"
-#include "../Renderer/Shader.h"
+#include "../../Renderer/Common/Shader.h"
 
 #include <string>
 

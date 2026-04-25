@@ -1,7 +1,7 @@
 #pragma once
 
 #include "AssetCache.h"
-#include "../Renderer/Texture.h"
+#include "../../Renderer/Common/Texture.h"
 
 namespace Rivet::Assets {
 

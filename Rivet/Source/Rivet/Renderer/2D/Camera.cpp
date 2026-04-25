@@ -1,6 +1,6 @@
-#include "Camera2D.h"
-#include "Renderer2D.h"
-#include "../App.h"
+#include "Camera.h"
+#include "Renderer.h"
+#include "../../Core/App.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 
