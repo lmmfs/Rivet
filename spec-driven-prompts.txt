@@ -42,7 +42,7 @@ requirements.md for the scope, decisions, context
 validation.md for how to know the implementation succeeded and can be merged
 Refer to specs/mission.md and specs/tech-stack.md for guidance.
 
-the new branch should have this name convetion "feat/<feature_name>"
+the new branch should have this name convetion "feat/phase-<pahse number>-<feature_name>"
 
 Important: You must ask, grouped on these 3, before writing to disk.
 
