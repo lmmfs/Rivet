@@ -75,10 +75,10 @@ Phases 1–11 established the 2D foundation. Phases 12 onward extend Rivet into 
 - [x] Existing 2D functionality verified unchanged after move
 
 ## Phase 13 — 3D Renderer
-- [ ] 3D camera (perspective projection, look-at)
-- [ ] Mesh abstraction (vertices, normals, UVs)
-- [ ] Basic 3D draw call (mesh + transform)
-- [ ] Depth testing enabled
+- [x] 3D camera (perspective projection, look-at)
+- [x] Mesh abstraction (vertices, normals, UVs)
+- [x] Basic 3D draw call (mesh + transform)
+- [x] Depth testing enabled
 
 ## Phase 14 — 3D Physics
 - [ ] Integrate Jolt Physics
