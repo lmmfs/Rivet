@@ -2,6 +2,8 @@
 
 Each phase is a small, shippable increment. Complete one before starting the next.
 
+Phases 1–11 established the 2D foundation. Phases 12 onward extend Rivet into a shared-core engine with both 2D and 3D capability.
+
 ## Phase 1 — Foundation (done)
 - [x] CMake project structure (Rivet static lib + Sandbox executable)
 - [x] Fetch dependencies (GLFW, GLAD, GLM, spdlog, stb_image)
@@ -66,7 +68,29 @@ Each phase is a small, shippable increment. Complete one before starting the nex
 - [x] Label component
 - [x] Button component
 
-## Phase 12 — README Update
+## Phase 12 — Module Restructure
+- [ ] Reorganise source into Core/, Renderer/2D/, Renderer/3D/, Physics/2D/, Physics/3D/
+- [ ] Shared renderer primitives (Shader, Buffer, Texture) moved to Renderer/Common/
+- [ ] Umbrella header updated to reflect module layout
+- [ ] Existing 2D functionality verified unchanged after move
+
+## Phase 13 — 3D Renderer
+- [ ] 3D camera (perspective projection, look-at)
+- [ ] Mesh abstraction (vertices, normals, UVs)
+- [ ] Basic 3D draw call (mesh + transform)
+- [ ] Depth testing enabled
+
+## Phase 14 — 3D Physics
+- [ ] Integrate Jolt Physics
+- [ ] 3D physics world (init, step, shutdown)
+- [ ] Static and dynamic rigid bodies (box, sphere)
+- [ ] Physics-to-renderer transform sync
+
+## Phase 15 — 3D Sandbox Demo
+- [ ] Sandbox scene using 3D renderer and physics together
+- [ ] Simple scene: a falling object landing on a static floor
+
+## Phase 16 — README Update
 - [ ] Project overview & description
 - [ ] Build & setup instructions
-- [ ] Feature list / capabilities
+- [ ] Feature list covering both 2D and 3D capabilities

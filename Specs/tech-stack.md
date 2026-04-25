@@ -11,6 +11,7 @@
 | Logging      | spdlog          | 1.16.0  |                                     |
 | Image        | stb_image       | 2.30    | Vendored                            |
 | GUI          | Dear ImGui      | docking  | GLFW + OpenGL3 backends            |
-| Physics      | Box2D           | 2.4.1    | FetchContent                       |
+| Physics (2D) | Box2D           | 2.4.1    | FetchContent                       |
+| Physics (3D) | Jolt Physics    | 5.3.0    | FetchContent; C++17, MIT           |
 | Audio        | miniaudio       | 0.11.25  | Vendored single-header             |
 | PCH          | Rvtph.h         | —        | Precompiled header                 |
