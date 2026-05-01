@@ -90,20 +90,28 @@ Phases 1–11 established the 2D foundation. Phases 12 onward extend Rivet into 
 ## Phase 15 — Skeletal Animation
 - [ ] Load joint hierarchy (skeleton) from glTF skin
 - [ ] Load animation tracks (TRS keyframes) from glTF animations
-- [ ] CPU skinning (blend-shape matrices uploaded as uniforms)
-- [ ] Sandbox demo: play a looping animation on the capsule-man model
+- [ ] CPU skinning (joint matrices uploaded as uniforms)
+- [ ] Skinning vertex shader (joint indices + weights attributes)
+- [ ] Sandbox demo: single hardcoded clip applied to capsule-man.glb
 
-## Phase 14 — 3D Physics
+## Phase 16 — Animation Player
+- [ ] `AnimationPlayer` type: holds a clip reference + playback state
+- [ ] `Play()` / `Pause()` / `Stop()` / `Seek(time)` API
+- [ ] Looping flag and end-of-clip callback
+- [ ] Optional: crossfade/blend between two clips
+- [ ] Sandbox demo: UI controls (ImGui) to switch and scrub animations
+
+## Phase 17 — 3D Physics
 - [ ] Integrate Jolt Physics
 - [ ] 3D physics world (init, step, shutdown)
 - [ ] Static and dynamic rigid bodies (box, sphere)
 - [ ] Physics-to-renderer transform sync
 
-## Phase 15 — 3D Sandbox Demo
+## Phase 18 — 3D Sandbox Demo
 - [ ] Sandbox scene using 3D renderer and physics together
 - [ ] Simple scene: a falling object landing on a static floor
 
-## Phase 16 — README Update
+## Phase 19 — README Update
 - [ ] Project overview & description
 - [ ] Build & setup instructions
 - [ ] Feature list covering both 2D and 3D capabilities
