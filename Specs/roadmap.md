@@ -80,6 +80,19 @@ Phases 1–11 established the 2D foundation. Phases 12 onward extend Rivet into 
 - [x] Basic 3D draw call (mesh + transform)
 - [x] Depth testing enabled
 
+## Phase 14 — glTF Static Mesh
+- [ ] Integrate tinygltf (header-only, FetchContent)
+- [ ] Load GLB/glTF files; support multiple mesh primitives per scene
+- [ ] Extract positions, normals, UVs, indices via accessor/bufferView unpacking
+- [ ] Apply base color texture from glTF material (if present)
+- [ ] Sandbox demo: render capsule-man.glb in bind pose
+
+## Phase 15 — Skeletal Animation
+- [ ] Load joint hierarchy (skeleton) from glTF skin
+- [ ] Load animation tracks (TRS keyframes) from glTF animations
+- [ ] CPU skinning (blend-shape matrices uploaded as uniforms)
+- [ ] Sandbox demo: play a looping animation on the capsule-man model
+
 ## Phase 14 — 3D Physics
 - [ ] Integrate Jolt Physics
 - [ ] 3D physics world (init, step, shutdown)

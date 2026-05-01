@@ -14,4 +14,5 @@
 | Physics (2D) | Box2D           | 2.4.1    | FetchContent                       |
 | Physics (3D) | Jolt Physics    | 5.3.0    | FetchContent; C++17, MIT           |
 | Audio        | miniaudio       | 0.11.25  | Vendored single-header             |
+| glTF loader  | tinygltf        | 2.9.x    | Header-only, MIT, FetchContent     |
 | PCH          | Rvtph.h         | —        | Precompiled header                 |
